@@ -36,3 +36,15 @@ class UserChangeForm(forms.ModelForm):
 
     def clean_password(self):
         return self.initial['password']
+
+
+class UserRegisterForm(forms.Form):
+    username = forms.CharField(max_length=30)
+    email = forms.EmailField()
+    password_1 = forms.CharField(widget=forms.PasswordInput)
+    password_2 = forms.CharField(widget=forms.PasswordInput)
+
+
+class UserLoginForm(forms.Form):
+    email = forms.EmailField()
+    password = forms.CharField(widget=forms.PasswordInput)
