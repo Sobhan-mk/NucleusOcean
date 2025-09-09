@@ -52,7 +52,6 @@ def login(request):
             else:
                 user = authenticate(request, username=data['email'], password=data['password'])
 
-                user = User.objects.get(email=data['email'])
                 if user.check_password(data['password']):
                     auth_login(request, user)
 
