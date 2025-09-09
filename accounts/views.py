@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import UserRegisterForm, UserLoginForm
+from .forms import UserRegisterForm, UserLoginForm, UserUpdateForm, ProfileUpdateForm
 from.models import User
 from django.contrib import messages
 import re
@@ -74,3 +74,26 @@ def signout(request):
     messages.success(request, 'you logged out successfully')
 
     return redirect('home:home')
+
+
+def profile(request):
+    if request.method == 'POST':
+        user_update_form = UserUpdateForm(request.POST, instance=request.user)
+        profile_update_form = ProfileUpdateForm(request.POST, instance=request.user.profile)
+
+        if user_update_form.is_valid() and profile_update_form.is_valid():
+            user_update_form.save()
+            profile_update_form.save()
+
+            messages.success(request, 'profile updated successfully')
+
+            return redirect('home:home')
+
+    else:
+        user_update_form = UserUpdateForm(instance=request.user)
+        profile_update_form = ProfileUpdateForm(instance=request.user.profile)
+
+    context = {'user_update_form' : user_update_form,
+               'profile_update_form' : profile_update_form}
+
+    return render(request, 'accounts/profile.html', context)
