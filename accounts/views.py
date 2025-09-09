@@ -3,7 +3,7 @@ from .forms import UserRegisterForm, UserLoginForm
 from.models import User
 from django.contrib import messages
 import re
-from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import authenticate, login as auth_login, logout
 
 
 def register(request):
@@ -67,3 +67,10 @@ def login(request):
     context = {'form': form, 'error_message': error_message}
 
     return render(request, 'accounts/login.html', context)
+
+
+def signout(request):
+    logout(request)
+    messages.success(request, 'you logged out successfully')
+
+    return redirect('home:home')
