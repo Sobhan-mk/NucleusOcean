@@ -2,15 +2,134 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>login</title>
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body, html {
+            height: 100%;
+            background-color: #28282a; /* Dark background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-container {
+            background-color: #28282a; /* Same as page background */
+            padding: 40px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 400px;
+            /* Removed box-shadow and border */
+        }
+
+        .form-container h1 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 400; /* Normal weight */
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        form input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #555; /* Keep input borders */
+            border-radius: 50px;
+            font-size: 14px;
+            background-color: #1f1f23; /* Slightly lighter for inputs */
+            color: #fff;
+        }
+
+        form input::placeholder {
+            color: #aaa;
+        }
+
+        form button {
+            padding: 12px;
+            border: none;
+            border-radius: 50px;
+            background-color: #6012b4;
+            color: #fff;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px #1c1c1c;
+        }
+
+        form button:hover {
+            background-color: #ffffff;
+            color: black;
+        }
+
+        .error-message {
+            color: #dc1d1d;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .form-footer {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        .form-footer a {
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
+            margin-left: 5px;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>login</h1>
-    <form method="post">
-        {{ form.as_p }}
-        {% csrf_token %}
-        {{ error_message }}
-        <button type="submit">submit</button>
-    </form>
+
+    <div class="form-container">
+        <h1>Login</h1>
+
+        <div class="form-footer">
+            <span>start your journey in histopathology and nucleus segmentation with HoVerNet AI.</span><br>
+            <span>login to your account</span>
+        </div><br>
+        <form method="post">
+            {% csrf_token %}
+
+            {% for field in form %}
+                {{ field }}
+            {% endfor %}
+
+            {% if error_message %}
+                <div class="error-message">{{ error_message }}</div>
+            {% endif %}
+
+            <button type="submit">Login</button>
+        </form>
+
+        <div class="form-footer">
+            <span>Don't have an account?</span>
+            <a href="{% url 'accounts:register' %}">Register</a>
+        </div>
+
+        <div class="form-footer">
+            <a href="{% url 'home:home' %}">home</a>
+        </div>
+    </div>
 </body>
 </html>

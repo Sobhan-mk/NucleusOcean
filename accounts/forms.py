@@ -39,15 +39,24 @@ class UserChangeForm(forms.ModelForm):
 
 
 class UserRegisterForm(forms.Form):
-    username = forms.CharField(max_length=30)
-    email = forms.EmailField()
-    password_1 = forms.CharField(widget=forms.PasswordInput)
-    password_2 = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(
+        max_length=150,
+        widget=forms.TextInput(attrs={'placeholder': 'username'})
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={'placeholder': 'email'})
+    )
+    password_1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'password'})
+    )
+    password_2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'Confirm password'})
+    )
 
 
 class UserLoginForm(forms.Form):
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'email'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'password'}))
 
 
 class UserUpdateForm(forms.ModelForm):
