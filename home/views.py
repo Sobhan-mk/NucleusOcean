@@ -6,3 +6,7 @@ def home(request):
     username = request.user.username if user else ''
     context = {'user_authenticated' : user, 'username' : username}
     return render(request, 'home/home.html', context)
+
+
+def about_developer(request):
+    return render(request, 'home/about_developer.html')

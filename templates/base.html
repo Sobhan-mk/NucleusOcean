@@ -236,6 +236,47 @@
             width: 24px;
             height: 24px;
         }
+        .main-content ul li {
+            display: inline-block;   /* shrink to content or fixed width */
+            width: 300px;            /* fixed size */
+            margin: 10px auto;       /* center horizontally */
+            padding: 12px 16px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+
+                /* The whole messages list */
+        ul.messages {
+            list-style: none;          /* remove bullets */
+            padding: 0;
+            margin: 10px 0;
+        }
+
+        /* General message box */
+        ul.messages li.message {
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 2px 10px #151515;
+        }
+
+        /* Different colors depending on message type */
+        ul.messages li.success {
+            background-color: #28282a;
+            color: #10ce3c;
+            border: 1px solid #6b6b6b;
+        }
+
+        ul.messages li.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+
 
 
 
@@ -285,7 +326,7 @@
                 <span class="link-text">Help</span>
             </a>
 
-            <a href="#" class="sidebar-link">
+            <a href="{% url 'home:about_developer' %}" class="sidebar-link">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-code-slash" viewBox="0 0 16 16">
                   <path d="M10.478 1.647a.5.5 0 1 0-.956-.294l-4 13a.5.5 0 0 0 .956.294zM4.854 4.146a.5.5 0 0 1 0 .708L1.707 8l3.147 3.146a.5.5 0 0 1-.708.708l-3.5-3.5a.5.5 0 0 1 0-.708l3.5-3.5a.5.5 0 0 1 .708 0m6.292 0a.5.5 0 0 0 0 .708L14.293 8l-3.147 3.146a.5.5 0 0 0 .708.708l3.5-3.5a.5.5 0 0 0 0-.708l-3.5-3.5a.5.5 0 0 0-.708 0"/>
                 </svg>
@@ -315,9 +356,7 @@
                 <!-- dropdown items -->
                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="userMenu">
                     <li><a class="dropdown-item" href="{% url 'accounts:profile' %}">Profile</a></li>
-                    <li><a class="dropdown-item" href="#">login</a></li>
-                    <li><a class="dropdown-item" href="#">login</a></li>
-                    <li><a class="dropdown-item" href="{% url 'accounts:logout' %}">logout</a></li>
+                    <li><a class="dropdown-item" style="color: #de3232" href="{% url 'accounts:logout' %}">logout</a></li>
                 </ul>
             </div>
                 {% else %}
@@ -335,13 +374,15 @@
 
 <div class="main-content">
     {% if messages %}
-        <ul>
+        <ul class="messages">
             {% for message in messages %}
-                <li class="{{ message.tags }}">{{ message }}</li>
+                <li class="message {{ message.tags }}">{{ message }}</li>
             {% endfor %}
         </ul>
     {% endif %}
+
     {% block body %}{% endblock %}
+
 </div>
 
 <script>

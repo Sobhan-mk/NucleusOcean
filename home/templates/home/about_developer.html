@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}about developer{% endblock %}
+{% block body %}
+    <style>
+    h1 {
+        color : white;
+    }
+
+    hr {
+        color: #a1a1a1;
+    }
+
+    p {
+        color: #d7d7d7;
+    }
+
+    .developer-container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 20px;
+        border: 1px solid #606060;  /* purple border */
+        border-radius: 15px;
+        background-color: #2c2b2b;  /* dark background */
+        box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+
+    /* Card layout: image left, details right */
+    .developer-card {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        flex-wrap: wrap;  /* allows wrapping on mobile */
+    }
+
+    /* Image styling */
+    .developer-image {
+        width: 180px;              /* bigger image */
+        height: 180px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #ffffff; /* golden accent border */
+    }
+
+    /* Details styling */
+    .developer-details {
+        flex: 1;                   /* take remaining space */
+        color: #fff;
+    }
+
+    /* Name styling */
+    .developer-details h2 {
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+        color: #ffffff;            /* golden accent */
+    }
+
+    /* Other info */
+    .developer-details p {
+        font-size: 1rem;
+        margin: 4px 0;
+        color: #dadada;
+    }
+
+    /* Responsive: stack on mobile */
+    @media (max-width: 600px) {
+        .developer-card {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .developer-details {
+            margin-top: 15px;
+        }
+    }
+    </style>
+        <h1>About the Developer</h1>
+        <hr>
+        <div class="developer-container">
+            <div class="developer-card">
+                <img src="{% static 'images/developer_image.jpg' %}" alt="Sobhan Mokhtari" class="developer-image">
+                <div class="developer-details">
+                    <h2>Sobhan Mokhtari</h2>
+                    <p>10th Grade</p>
+                    <p>Isfahan</p>
+                    <p>Ejei1 School</p>
+                    <p>12th Contest of Kharazmi Teenagers</p>
+                    <p>1404-1405</p>
+                </div>
+            </div>
+        </div>
+        <p>Hello! My name is Sobhan Mokhtari. I am a student from Isfahan, studying at Shahid Ejei 1 School in the 10th grade. I started my journey with Python almost four years ago.
+        It has been a long journey. First, I began learning the basics of Python and its syntax. I spent a lot of energy and time on this part.
+        After that, I started studying the basic tools of data science and machine learning.</p><br>
+
+        <p>First, I learned NumPy — a powerful and fundamental tool for performing large numerical calculations in a very short time.
+        I also learned a little about Pandas and working with tabular data as an introduction to the world of machine learning.
+        After that, I worked a lot with Scikit-learn, which helped me become stronger and more familiar with classical machine learning.</p><br>
+
+        <p>When I felt that traditional machine learning was not enough, I started learning about deep learning and neural networks.
+        I chose PyTorch for this important task. PyTorch is very powerful and offers many options for deep learning, training, optimization, and neural network implementation.
+        It is also lower-level compared to TensorFlow, which allows programmers to customize their projects more. Because of this, I chose PyTorch.</p><br>
+
+        <p>My most important references are:</p>
+        <a href="https://www.studiebijdehand.nl/p/9781098125974/hands-on-machine-learning-3rd-edition?srsltid=AfmBOorFPduXMnD15_GbgT7hEvIjeOmhGVAt47LGxEq_xLLIvTVr4LvqMl0">Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow</a>
+        <p>by O'REILLY, and</p>
+        <a href="https://www.manning.com/books/deep-learning-with-pytorch">Deep Learning with PyTorch</a>
+        <p>by Manning.</p><br>
+
+        <p>From these books, I learned the basics and theories of machine learning, some of the mathematics and equations behind optimization and SGD,
+        data visualization, model evaluation, the fundamentals of deep learning, and how to implement models with PyTorch.</p><br>
+
+        <p>This became my gateway into the world of computer vision! I started with a very simple image classification project, fine-tuning ResNet-50 and EfficientNet
+        on my dataset for plant classification. Although this was a simple project in deep learning, it was really difficult for me to understand the details and code at first.
+        I needed a GPU and CUDA for more powerful computation, so I used Google Colab for all of my projects.</p><br>
+
+        <p>Eventually, I decided to take on a bigger and more advanced model in computer vision and histopathology: HoVerNet.
+        This was very challenging because HoVerNet is highly complex and includes many custom theories and algorithms.
+        For this, I had to code many things myself: a ground-truth generation system, a loss calculation system, the model and its details (matching the official code as closely as possible),
+        and a post-processing step to combine model outputs into a suitable output mask. These tasks required a deep understanding of the mechanics and algorithms of HoVerNet.</p><br>
+
+        <p>I wanted a model for instance segmentation in histopathological microscopic H&E images.
+        Because of this, I chose HoVerNet, which is designed specifically for nucleus segmentation and classification.</p><br>
+
+        <p>In conclusion, this is my latest project, and I have tried to create a strong computer vision project with the knowledge I have gained.
+        I hope you enjoyed reading about my journey in programming and machine learning. :)</p>
+
+
+{% endblock %}
