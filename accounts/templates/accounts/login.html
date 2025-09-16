@@ -1,9 +1,11 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
     <style>
         * {
             margin: 0;
@@ -14,26 +16,31 @@
 
         body, html {
             height: 100%;
-            background-color: #28282a; /* Dark background */
+            background-color: #232325; /* Dark background */
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
         .form-container {
-            background-color: #28282a; /* Same as page background */
+            background-color: #232325;
             padding: 40px;
             border-radius: 20px;
             width: 100%;
             max-width: 400px;
-            /* Removed box-shadow and border */
+        }
+
+        .form-container img {
+            display: block;
+            margin: 0 auto ; /* center the logo and add spacing */
+            max-width: 180px;   /* adjust size if needed */
         }
 
         .form-container h1 {
             color: #fff;
             text-align: center;
             margin-bottom: 30px;
-            font-weight: 400; /* Normal weight */
+            font-weight: 400;
         }
 
         form {
@@ -45,10 +52,10 @@
         form input {
             width: 100%;
             padding: 12px 15px;
-            border: 1px solid #555; /* Keep input borders */
+            border: 1px solid #555;
             border-radius: 50px;
             font-size: 14px;
-            background-color: #1f1f23; /* Slightly lighter for inputs */
+            background-color: #232325;
             color: #fff;
         }
 
@@ -100,17 +107,19 @@
 </head>
 
 <body>
-
     <div class="form-container">
+        <!-- Logo here -->
+        <img src="{% static 'images/big logo.png' %}" alt="Logo">
+
         <h1>Login</h1>
 
         <div class="form-footer">
             <span>start your journey in histopathology and nucleus segmentation with HoVerNet AI.</span><br>
             <span>login to your account</span>
         </div><br>
+
         <form method="post">
             {% csrf_token %}
-
             {% for field in form %}
                 {{ field }}
             {% endfor %}

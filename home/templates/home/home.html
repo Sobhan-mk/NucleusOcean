@@ -3,4 +3,14 @@
 {% block body %}
     <h1 style="color: white">home</h1>
     <hr  style="color: #b4b4b4">
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">submit</button>
+    </form>
+
+    {% if file_url %}
+        <img src="{{ file_url }}">
+    {% endif %}
 {% endblock %}
