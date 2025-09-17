@@ -11,6 +11,8 @@ from PIL import Image
 def home(request):
     file_url = None
 
+    nucleus_data = []
+
     if request.method == 'POST':
         form = ImageUploadForm(request.POST, request.FILES)
 
@@ -51,8 +53,10 @@ def home(request):
 
         print('forward pass done')
 
-        for image, np_map, hv_map, tp_map in zip(batch_input_data, np_maps, hv_maps, tp_maps):
-            instance_output, tp_output = post_proc.instance_seg_visualization(image, np_map, hv_map, tp_map)
+        for id, (image, np_map, hv_map, tp_map) in enumerate(zip(batch_input_data, np_maps, hv_maps, tp_maps), start=1):
+            instance_output, tp_output, nucleus_total_num, nucleus_type_num = post_proc.instance_seg_visualization(image, np_map, hv_map, tp_map)
+
+            nucleus_data.append((id, nucleus_type_num, nucleus_total_num))
 
             batch_instance_map.append(torch.from_numpy(instance_output))
             batch_tp_map.append(torch.from_numpy(tp_output))
@@ -69,7 +73,9 @@ def home(request):
     else:
         form = ImageUploadForm()
 
-    context = {'form': form, 'file_url': file_url}
+    context = {'form': form,
+               'file_url': file_url,
+                'nucleus_data' : nucleus_data}
 
     return render(request, 'home/home.html', context)
 

@@ -28,6 +28,7 @@ class PostProcess:
     np_map = F.softmax(np_map, dim=0)
 
     foreground = np_map[0]
+    foreground = self.normalize(foreground)
     foreground = (foreground > 0.5).int()
 
     foreground = foreground.detach().cpu().numpy()
@@ -64,21 +65,26 @@ class PostProcess:
 
     instance_map = watershed(dist, markers=markers, mask=foreground)
 
-    channels = tp_map.shape[0]
-    tp_map = torch.argmax(tp_map, dim=0)
-    tp_map = F.one_hot(tp_map, num_classes=channels)
-    tp_map = tp_map.permute(2, 0, 1)
+    instance_ids = np.unique(instance_map)
+    instance_ids = instance_ids[instance_ids != 0]
 
-    tp_map = tp_map.detach().cpu().numpy()
+    tp_map = F.softmax(tp_map[:-1], dim=0)
+    type_map = np.zeros_like(instance_map)
 
-    for channel_id in range(len(tp_map)):
-      tp_map[channel_id] = tp_map[channel_id] * instance_map
+    for instance_id in instance_ids:
+        x_coords, y_coords = np.where(instance_map == instance_id)
 
-    return dist, instance_map, tp_map
+        masked_probs = tp_map[:, x_coords, y_coords]
+        average_probs = masked_probs.mean(dim=1)
+        type_map[x_coords, y_coords] = torch.argmax(average_probs) + 1
 
+    return instance_map, type_map
 
   def instance_seg_visualization(self, image, np_map, hv_map, tp_map):
-    dist, instance_map, mask = self.post_process(np_map, hv_map, tp_map)
+    instance_map, type_map = self.post_process(np_map, hv_map, tp_map)
+
+    nucleus_total_num = 0
+    nucleus_type_num = [0, 0, 0, 0, 0]
 
     colors = [
           (0,0,255),    # red
@@ -93,6 +99,8 @@ class PostProcess:
     instance_ids = np.unique(instance_map)
     instance_ids = instance_ids[instance_ids != 0]
 
+    nucleus_total_num = len(instance_ids)
+
     for instance_id in instance_ids :
       instance_mask = (instance_map == instance_id).astype(np.uint8)
 
@@ -101,14 +109,16 @@ class PostProcess:
 
     type_overlay = (self.normalize(image.permute(1, 2, 0)) * 255).detach().cpu().numpy().copy().astype(np.uint8)
 
+    instance_ids = np.unique(type_map)
+    instance_ids = instance_ids[instance_ids != 0]
 
-    for channel_id in range(len(mask) - 1):
-      instance_ids = np.unique(mask[channel_id])
-      instance_ids = instance_ids[instance_ids != 0]
+    for instance_id in instance_ids:
+      type_mask = (type_map == instance_id).astype(np.uint8)
 
-      for instance_id in instance_ids:
-        instance_mask = (mask[channel_id] == instance_id).astype(np.uint8)
-        contours, _ = cv2.findContours(instance_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        cv2.drawContours(type_overlay, contours, -1, color=colors[channel_id], thickness=2)
+      contours, _ = cv2.findContours(type_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+      cv2.drawContours(type_overlay, contours,-1, color=colors[instance_id-1], thickness=2)
 
-    return instance_map_overlay, type_overlay
+      type_insntace_ids = np.unique(instance_map * type_mask)
+      nucleus_type_num[instance_id-1] = len(type_insntace_ids) - 1
+
+    return instance_map_overlay, type_overlay, nucleus_total_num, nucleus_type_num

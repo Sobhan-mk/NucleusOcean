@@ -12,7 +12,12 @@ class HomeConfig(AppConfig):
     name = 'home'
 
     def ready(self):
+        model_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'hovernet.pth')
+        state_dict = torch.load(model_path, map_location='cpu')
+
         self.hovernet = HoverNet()
 
-        print('model loaded')
+        self.hovernet.load_state_dict(state_dict)
+
+        self.hovernet.eval()
 

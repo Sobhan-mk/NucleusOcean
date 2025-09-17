@@ -1,16 +1,128 @@
 {% extends 'base.html' %}
-{% block title %}home{% endblock %}
+{% block title %}Home{% endblock %}
 {% block body %}
-    <h1 style="color: white">home</h1>
-    <hr  style="color: #b4b4b4">
 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">submit</button>
-    </form>
+<style>
+    /* General */
+    h1 {
+        color: white;
+    }
+    hr {
+        color: #b4b4b4;
+    }
+
+    /* Form styles */
+    .upload-card {
+        background-color: rgba(51, 55, 61, 0.79);
+        border-radius: 35px;
+        font-size: 17px;
+        color: white;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .file-input {
+        border: 2px solid #7912b4;
+        border-radius: 50px;
+        background-color: #232325;
+        color: white;
+        font-size: 17px;
+    }
+
+    .send-btn {
+        background-color: #7912b4;
+        border: 3px solid #7912b4;
+        color: white;
+        border-radius: 50px;
+        width: 300px;
+        font-size: 17px;
+        transition: 0.3s;
+    }
+
+    .send-btn:hover {
+        background-color: white;
+        color: black;
+    }
+
+    .preview-img {
+        max-height: 250px;
+        object-fit: contain;
+        border-radius: 15px;
+        background-color: #f8f9fa;
+        padding: 10px;
+    }
+
+    /* White table container */
+    .table-wrapper {
+        background-color: white;
+        border-radius: 20px;
+        padding: 15px;
+        margin-top: 15px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* subtle shadow */
+    }
+</style>
+
+<div class="container py-4">
+
+    <h1 class="mb-3">Home</h1>
+    <hr>
+
+    <p style="color: #dadada">Send your files to the HoverNet model. You can send multiple files.</p>
+
+    <div class="card p-3 mb-4 shadow-sm upload-card">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <input type="file" name="images"
+                       class="form-control form-control-lg file-input w-100"
+                       multiple>
+            </div>
+            <button type="submit" class="btn btn-lg send-btn">Send</button>
+        </form>
+    </div>
 
     {% if file_url %}
-        <img src="{{ file_url }}">
+    <!-- Image separately -->
+    <div class="text-center mb-3">
+        <img src="{{ file_url }}" alt="Processed Image"
+             class="img-fluid mb-3 preview-img">
+
+        <a href="{{ file_url }}" download class="btn btn-success btn-sm">
+           Download Image
+        </a>
+    </div>
+
+    <!-- Table inside white rectangle -->
+    <div class="table-wrapper">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Type 1</th>
+                        <th>Type 2</th>
+                        <th>Type 3</th>
+                        <th>Type 4</th>
+                        <th>Type 5</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for id, types_num, total in nucleus_data %}
+                    <tr>
+                        <td>{{ id }}</td>
+                        {% for num in types_num %}
+                        <td>{{ num }}</td>
+                        {% endfor %}
+                        <td><strong>{{ total }}</strong></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     {% endif %}
+</div>
 {% endblock %}
